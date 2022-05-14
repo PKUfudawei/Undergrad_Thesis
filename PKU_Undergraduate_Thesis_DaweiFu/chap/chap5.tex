@@ -1,25 +1,26 @@
-\chapter{开发首个$H\to WW$质量去相关的多分类标记器（基于ParticleNet）}
+\chapter{开发$H\to WW$质量去相关多分类标记器}
 \label{chap5}
 \fontsize{12bp}{14.4pt}
+我们基于上一章的ParticleNet网络架构，通过修改网络输入输出，产生专用训练样本，并结合质量去相关技术，开发了CMS实验中首个针对大动量$H\to WW$的质量去相关版本多分类标记器。
 
 \section{质量去相关技术}
 对于质量相关版本的标记器，神经网络会学习到信号样本与本底样本质量分布的差异，并且把它作为区分信号与本底的潜在判别条件，对于这样训练出来的标记器，在把本底事件误鉴别为信号事件时，会更倾向于挑选出质量分布接近信号样本的本底事件，从而对于数据中通过标记器的本底事件，在质量谱上会形成信号峰下的峰状本底，这种情况也叫做质量雕刻（mass-sculpting）。这显然对于我们从质量谱中提取信号造成了不小的困难，因此质量去相关的标记器就显得尤为重要。
 
 \begin{figure}[H]
  \centering
- \caption{质量关联标记器对QCD本底的质量雕刻现象（与质量去相关标记器的对比）}
+ \caption{质量关联标记器对QCD本底的质量雕刻现象（与质量去相关标记器的对比）\cite{jet-tagging-algorithms}}
  \includegraphics[height=10cm, width=11cm]{pictures/nonMDtagger.png}
  \label{fig:5.1}
 \end{figure}
 
-
-从以上信息我们知道，当训练中的信号和本底样本有明显不同的质量分布时，训练出来的标记器在推理筛选本底样本时就会出现质量雕刻的现象。所以，如果训练样本的信号和本底的质量分布一致，标记器则不会学习到二者的质量信息作为区分条件，从而不会在推理筛选本底样本时出现质量雕刻现象。
+从以上信息我们知道，当训练中的信号和本底样本有明显不同的质量分布时，训练出来的标记器在推理筛选本底样本时就会出现质量雕刻的现象。所以，如果训练样本的信号和本底的质量分布一致，标记器则不会学习到二者的质量信息作为区分条件，从而不会在推理筛选本底样本时出现质量雕刻现象\cite{deepak8andmass-decorrelation}。
 
 要实现这点，最简单直接的办法就是在训练时对信号和本底的分布进行重新加权，但是这往往还有其他隐患，例如：
 \begin{enumerate}[(1)]
     \item 如果信号样本的质量分布峰过于集中，也就是说，在信号质量窗外的事例统计量过低，这样对信号重加权时，会导致信号窗内的高峰被极大压低到和信号窗外事件相同的高度，从而造成大量真实信号没有被选中参与训练，是一种极大的浪费和欠拟合的隐患。
     \item 同时，对于远离信号窗的事例，也很难被重建出来，进一步加大了训练和推理的难度。
 \end{enumerate}
+
 综合以上两点原因，最好的做法就是尽可能使用于训练的信号样本的质量分布尽可能平滑（避免极端事例的低统计量过度压低加权），信号窗尽可能大（避免远离信号窗事例难以重建）。所以我们的做法是：设计带有一维$ m_{SD}$平分布的专用MC样本以供训练，可以通过产生并合并不同共振态质量的样本实现。（例如，产生变质量$m_X$的$X\to bb$，$X\to cc$，$X\to qq$样本以训练通用二分叉喷注标记）
 
 \section{分类标签}
@@ -48,36 +49,32 @@
 我们产生了专门设计的私人HWW信号样本和基于官方设置产生的QCD本底样本，同时按照15:1的比例把它们分成训练集和验证集供训练使用。
 \subsubsection{信号样本}
 因为我们的目标是开发一个质量去相关的标记器，所以我们的信号MC样本有以下特点：
-\begin{enumerate}
+\begin{itemize}
     \item 样本基于2017 ultra-legacy，总共有两千五百多万事例。
     \item 使用变质量X的$X\to WW$衰变样本，设置的产生级别质量分布区间为$15 [\si{GeV}]\leq m_X\leq 250[\si{GeV}]$，并保证合并起来的总信号样本具有平坦的产生级别质量分布，同时设置W质量为$m_W=80[\si{GeV}]$。
     \item 使用JHUGen产生子实现$X\to WW\to4q/\ell \nu qq$衰变以更好模拟衰变产物的自旋关联。
     \item 喷注经过AK8算重建法并且通过MC事实匹配打上标签。
-\end{enumerate}
+\end{itemize}
 
 \subsubsection{本底样本}
 QCD本底样本有以下几个特点：
-\begin{enumerate}
+\begin{itemize}
     \item 样本基于2017 ultra-legacy，总共有两千八百多万事例。
     \item 喷注经过AK8算重建法并且通过MC事实匹配打上标签。
-\end{enumerate}
+\end{itemize}
 \subsection{测试集}
-测试集以训练集和验证集相同的方式产生。
-
-对于测试集中的信号样本，Higgs的产生级别质量固定在标准模型125[GeV]处（训练集中不包含这个质量点产生的样本），包含约四十万个事例。
-
-对于测试集中的QCD本底样本，以和训练集相同的方式产生，共有约五百万左右事例。
+测试集以训练集和验证集相同的方式产生。对于测试集中的信号样本，Higgs的产生级别质量固定在标准模型125[GeV]处（训练集中不包含这个质量点产生的样本），包含约四十万个事例。对于测试集中的QCD本底样本，以和训练集相同的方式产生，共有约五百万左右事例。
 
 
 \section{标注器设置}
 \subsection{预挑选条件}
 我们要求进入标注器的事例满足以下条件：
-\begin{enumerate}
+\begin{itemize}
     \item 每个事例仅由一个喷注构成，并且这个喷注通过了Pile-up的紧挑选条件
     \item 喷注的横向动量满足$200[\si{GeV}]<p_T<2500[\si{GeV}]$
     \item 喷注的soft-drop质量满足$20[\si{GeV}]\leq m_{SD}<260[\si{GeV}]$
     \item 对于训练样本，喷注要通过事实匹配满足12个标签分类之一
-\end{enumerate}
+\end{itemize}
 \subsection{重加权设置}
 训练用的信号样本和本底样本合起来共有12个分类标签，我们要产生质量去相关的标记器，就得对用于训练的信号和本底进行质量和横向动量的二维分区间重加权。
 
@@ -97,7 +94,7 @@ QCD本底样本有以下几个特点：
 \subsection{神经网络输入}
 我们针对粒子候选者（ParticleFlow candidates）和重建出的次级顶点两类对象，定义如下变量作为标记器神经网络的输入，如下\textbf{表\ref{table:5.1}}所示。
 \begin{table}[htbp]
-    \caption{神经网络输入}\label{table:5.1}
+    \caption{神经网络输入\cite{Javier}}\label{table:5.1}
     \centering
     \begin{tabular}{>{\centering\arraybackslash}p{2.5cm}%
     >{\centering\arraybackslash}p{3cm}%
@@ -147,7 +144,7 @@ QCD本底样本有以下几个特点：
 \end{table}
 
 \section{标记器在测试集上效果}
-ROC图如下
+同时对对信号样本标记与本底样本标记的ROC图如下
 \begin{figure}[H]\label{fig:5.2}
  \centering
  \caption{标记器的$H\to WW\to 4q$标记效果}
@@ -180,7 +177,22 @@ ROC图如下
  \includegraphics[height=12cm, width=12cm]{pictures/ROC_multi-modes_PKU_std.pdf}
  \label{fig:5.5}
 \end{figure}
-从这个图里我们可以看到，在Mistag rate=1\%时，除了3q末态（指HWW衰变到四个夸克但只有三个出现在被重建的AK8喷注中）的标记效率只有33\%左右，其他几个道的标记啊效率都在60\%$\sim$80\%之间，更让我们对开发的标记器充满信心。
+从这个图里我们可以看到，在Mistag rate=1\%时，除了3q末态（指HWW衰变到四个夸克但只有三个被重建在AK8喷注中）的标记效率只有33\%左右，其他几个道的标记啊效率都在60\%$\sim$80\%之间，更让我们对开发的标记器充满信心。
 \section{在分析中的初步应用效果}
-我们目前已经将开发的标记器投入正式的CMS实验分析中使用，目前已经应用的分析为：胶子聚合产生希格斯，再到WW散射的过程。在分析探索中，我们把我们的标记器和目前官方分析中针对AK8喷注常用的DeepAK8-MD标记器进行了比较。比较结果如下：
+我们目前已经将开发的标记器投入正式的CMS实验分析中使用，目前已经初步应用的分析为：胶子聚合产生希格斯，再到WW散射的过程。其费曼图如\textbf{图\ref{fig:2.4}左上}所示。
 
+在分析中，我们把我们开发的基于PaticleNet-MD的标记器和目前官方分析中针对AK8喷注常用的DeepAK8-MD标记器进行了比较。比较结果如下\textbf{图\ref{fig:5.6}}和\textbf{图\ref{fig:5.7}}所示
+\begin{figure}[H]
+ \centering\label{fig:5.6}
+ \caption{开发的PNet-MD标记器与DeepAK8标记器在$H\to WW\to4q$道的标记表现比较}
+ \includegraphics[height=10cm, width=10cm]{pictures/ana_roc_4q.pdf}
+ \label{fig:5.6}
+\end{figure}
+
+\begin{figure}[H]
+ \centering\label{fig:5.7}
+ \caption{开发的PNet-MD标记器与DeepAK8标记器在$H\to WW\to\ell\nu qq$道的标记表现比较}
+ \includegraphics[height=10cm, width=10cm]{pictures/ana_roc_2q.pdf}
+ \label{fig:5.7}
+\end{figure}
+可以看到，我们开发的标记器与以往官方使用的标记器比有接近50\%的性能提升，并且随着日后更多的研究和采用更大规模网络模型，标记器的表现还有更大的提升空间与更多的应用场景。

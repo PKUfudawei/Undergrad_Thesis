@@ -1,10 +1,23 @@
 \begin{cabstract}
     \zihao{5}\kaishu
-	中文摘要部分...
+	2012年在LHC的ATLAS实验和CMS实验上发现的希格斯玻色子（也被称为“上帝粒子”）填补了粒子物理标准模型的最后一块拼图。统一三大相互作用的标准模型成为了物理学目前最精确最成功的理论，但仍然存在着无法统一引力、未发现的暗物质、无法解释的正反物质比例等难题。
+	
+	在大型强子对撞机的后希格斯粒子时代有两个主要研究方向：一是对标准模型的精确检验（包括测量希格斯粒子的属性），二是搜寻TeV能标处可能存在的新物理（如扩展额外维模型预言的三玻色子共振态）。在即将开始的CMS实验的RUN 3阶段和2027年升级的高通量LHC的未来背景下，粒子物理学家们将手握更多的统计量去尝试推动物理学前沿发展。
+	
+	本文将着眼于大动量希格斯粒子的WW散射过程，这是因为：一，CMS实验对大动量希格斯粒子分析还有很多空白等待填充，对大动量希格斯粒子的测量有利于在更高能量区域精确检验标准模型的高阶修正项，同时也是对高能标物理的间接搜寻；二，大动量希格斯粒子会导致衰变末态形成合并喷注，具有独特的喷注子结构和全新相空间，利用深度学习开发的标记器能在这种场景下执行传统标记器难以执行的任务，是神经网络在物理领域的绝佳应用；三，可以通过此类场景搜寻其他可能的非标准模型XWW共振态。在2022年超重W玻色子实验结果背景下，有利于补充更多W玻色子相关超出标准模型的证据或否决部分新物理模型，缩小对超出标准模型探索的范围，提高探索效率。
+	
+	本文在对WW共振态的研究中，针对WW的全强子衰变和半轻衰变场景，开发了CMS实验中首个针对HWW喷注的多分类标记器，并且利用了质量去相关技术，从而为非希格斯质量的XWW共振态搜寻提供了广阔前景。该标记器基于ParticleNet深度神经网络，创新性地使用点云表示粒子对象，并通过边卷积(EdgeConv)的图神经网络技术实现了网络中粒子的交换对称性，体现了对传统深度学习标记器的喷注图像表示和粒子列表表示的物理优越性，从而充分挖掘了深度神经网络的标记潜力。我们开发出的HWW标记器比先前最佳的DeepAK8标记器在$H\to WW\to 4q$道的标记性能提升了接近50\%，是一次卓有成效的喷注技术革新，已经受到CMS合作组JMAR官方会议的持续关注，并且在HWW相关分析上已经得到了初步应用。在未来的研究中，该标记器有望获得更多更好的性能改善，助推我们感兴趣的大动量HWW研究，同时也迈出向未来更大规模的通用喷注标记器的重要一步，有望大大提高CMS实验在RUN 3阶段和未来高通量LHC上的测量精确性和探索更多新奇的超出标准模型物理。
 \end{cabstract}
 
 \begin{eabstract}
-    英文摘要部分...
+
+    The discovery of Higgs boson, namely "God Particle", on ATLAS and CMS experiments of LHC in 2012 has completed Standard Model, which makes Standard Model the most precise and successful model in physics with the unification of three kinds of interactions. However, there still exists lots of problems to solved: No gravity in this model yet, undiscovered dark-matter and the unexplained high ratio of matters vs. anti-matters.
+    
+    During the post Higgs-discovery era on LHC, there are two main research motivations: One is for the precise measurement of Standard Model including measuring the properties of Higgs boson. The other is to search possible new physics model on TeV energy-scale like Tri-boson resonances predicted by extra-dimension model and extended gauge symmetry. Under the background of upcoming RUN 3 phase of CMS experiment and futural High-Luminosity LHC upgraded in 2027, particle physicists will try to promote the frontier of physics with more statistics.
+    
+    This article will focus on the WW scattering process of boosted Higgs, with the reasons as follows: 1. There are lots of unexplored boosted Higgs analysis in CMS experiment, therefore, both the test on higher-order correction of Standard Model in high pt region and the indirect search for new physics on high energy-scale will benefit a lot from boosted Higgs precise measurement; 2. Boosted Higgs will result in merged jet in final states and thus have unique jet-substructure and new phase-space. In such scenario, our tagger developed by deep learning can execute the task where traditional taggers usually failed, which indicates a great application of deep learning technique in physics; 3. Exploring the similar scenario, we will be able to search possible BSM (Beyond-Standard-Model) XWW resonances. Under the background of overweighted W boson result, this motivation will help to supplement more W-related BSM evidence or veto some new physics model to shrink the BSM area waiting to be explored so as to increase exploring efficiency.
+    
+    In the study of WW resonances in this article, we focused on the all-hadronic and semi-leptonic decays from WW and exploited the first multi-class tagger for HWW jet in CMS experiment. Additionally, the tagger is designed in Mass-Decorrelation version to be used in non-Higgs WW resonances' scenery. Our tagger is based on ParticleNet, creatively using cloud points to represent particle objects. And also it implements permutation-invariance with EdgeConvolution technique in Graph-Neural-Network so that reflects the physics supremacy vs. the jet-image representation and the particle-list presentation in traditional taggers, which dug out the full potential in deep tagging. Our tagger performs about 50\% better than the previous best tagger DeepAK8 on $H\to WW\to 4q$ tagging task, which indicates a great revolution in jet-tagging technique and has gained continuous attention from JMAR meeting in CMS experiment. Having been preliminarily applied the tagger on HWW related analysis, the tagger is belived to be improved more in the future and help in HWW analysis of our interest. More important, it's a great step towards futural lager classification-scale tagger which will be used in RUN 3 phase of CMS experiment and HL-LHC for more precise measurement and more fascinated BSM models.
 \end{eabstract}
 
 % vim:ts=4:sw=4
