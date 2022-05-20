@@ -17,7 +17,7 @@
 % 参考https://github.com/hushidong/biblatex-gb7714-2015/blob/master/example/cls-beamer.tex
 \documentclass[UTF8,nocolorlinks,ugly]{pkuthss}
 \usepackage[backend=biber,bibstyle=gb7714-2015,citestyle=gb7714-2015]{biblatex}
-\usepackage{enumerate,amsmath,bm,siunitx,float,booktabs,array,multirow,diagbox}
+\usepackage{enumerate,amsmath,bm,siunitx,float,booktabs,array,multirow,diagbox,minted,comment}
 \setlength{\bibitemsep}{3bp}
 \renewcommand*{\bibfont}{\zihao{5}\linespread{1.27}\selectfont}
 
@@ -25,7 +25,7 @@
 	cthesisname = {本科生毕业论文},
  	thesiscover = {本科生毕业论文},
 	ethesisname = {Undergraduate Thesis},
-	ctitle = {CMS实验中大动量希格斯粒子的双W玻色子散射研究与其末态标记技术的开发},
+	ctitle = {CMS实验中大动量$H\to WW$的标记技术开发及物理应用},
 	etitle = {Study of boosted Higgs decaying to WW in CMS experiment and its tagger developement},
 	cauthor = {付大为}, eauthor = {Dawei Fu},
 	studentid = {1800011105},
@@ -45,30 +45,30 @@
 	\maketitle
 	\cleardoublepage
 	% 需添加二维码
-	\include{chap/copy}
+	\include{chapters/copy}
 
 	\cleardoublepage
 	\pagestyle{plain}
 	\setcounter{page}{0}
 	\pagenumbering{Roman}
-	\include{chap/abs}
+	\include{chapters/abstract}
 	\tableofcontents
 
 	\mainmatter
-	\include{chap/chap1}
-	\include{chap/chap2}
-	\include{chap/chap3}
-	\include{chap/chap4}
-	\include{chap/chap5}
-	\include{chap/chap6}
+	\include{chapters/chap1}
+	\include{chapters/chap2}
+	\include{chapters/chap3}
+	\include{chapters/chap4}
+	\include{chapters/chap5}
+	\include{chapters/chap6}
     
     \appendix
     \printbibliography[heading = bibintoc]
-
+    \include{chapters/appendix}
 	\backmatter
-	\include{chap/ack}
+	\include{chapters/acknowledgement}
 	% 需添加二维码
-	\include{chap/origin}
+	\include{chapters/origin}
 
 \end{document}
 

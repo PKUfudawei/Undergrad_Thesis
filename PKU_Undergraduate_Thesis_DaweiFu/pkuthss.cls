@@ -372,7 +372,7 @@
 		% Title of the thesis.
 		{%
 			\zihao{2}\linespread{1.6}\heiti{\label@ctitle}%
-			\thss@int@fillinblank{3}{0.64\textwidth}{\heiti{\fontsize{22bp}{26.4pt}\@ctitle}}%
+			\thss@int@fillinblank{2}{0.64\textwidth}{\heiti{\fontsize{22bp}{26.4pt}\@ctitle}}%
 		}
 		\vfill
 		% Information about the author.
