@@ -56,11 +56,19 @@
 因为我们的目标是开发一个质量去相关的标记器，所以我们的信号MC样本有以下特点：
 \begin{itemize}
     \item 样本基于2017 ultra-legacy，总共有两千五百多万事例。
-    \item 使用变质量X的$X\to WW$衰变样本，设置的产生级别质量分布区间为$15 [\si{GeV}]\leq m_X\leq 250[\si{GeV}]$，并保证合并起来的总信号样本具有平坦的产生级别质量分布，同时设置W质量为$m_W=80[\si{GeV}]$。
+    \item 使用变质量X的$X\to WW$衰变样本，设置的产生级别质量分布区间为$15 [\si{GeV}]\leq m_X\leq 250[\si{GeV}]$，并保证合并起来的总信号样本具有平坦的产生级别质量分布（如\textbf{图\ref{fig:gen_mass}}所示），同时设置W质量为$m_W=80[\si{GeV}]$。
     \item 使用JHUGen产生子实现$X\to WW\to4q/\ell \nu qq$衰变以更好模拟衰变产物的自旋关联。
     \item 喷注通过$\Delta R=0.8$的事实匹配以满足AK8喷注的要求。
     \item 喷注通过粒子级别的事实匹配打上$4q,\ 3q,\ e\nu qq,\ \mu\nu qq,\ \tau_e\nu qq,\ \tau_\mu\nu qq,\ \tau_h\nu qq$七个标签之一。
 \end{itemize}
+
+\begin{figure}[H]
+ \centering
+ \caption{我们产生的具有平坦质量分布的信号样本用于训练}
+ \includegraphics[height=10cm, width=11cm]{pictures/gen_mass.png}
+ \label{fig:gen_mass}
+\end{figure}
+
 
 \subsubsection{本底样本}
 QCD本底样本有以下几个特点：
@@ -177,6 +185,9 @@ QCD本底样本有以下几个特点：
 \begin{equation}
     discriminant\_score\equiv\frac{score\_signal}{score\_signal + score\_QCD}
 \end{equation}
+并且通过在判别分数变量上设置阈值，以达到筛选信号和本底的效果，判别分数越接近1，说明喷注越有可能是信号喷注，反之更可能是本底喷注。
+
+而通过扫描判别分数阈值，我们就可以获得不同的（信号标记效率，本底误标记效率），从而可以画出表示标记器表现效果的ROC(Receiver operating characteristic) Curve图。一般来说，本底误标记效率一定时，信号标记效率越大，标记器效果越好。
 \section{标记器在测试集上效果}
 同时对信号样本标记与本底样本标记的ROC图如下，其纵轴是QCD被误标记信号的效率，横轴是信号被标记的效率
 \begin{figure}[H]\label{fig:5.2}
