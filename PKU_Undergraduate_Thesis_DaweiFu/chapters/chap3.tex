@@ -1,7 +1,7 @@
 \chapter{CMS实验的重建与标记技术介绍}
 \label{chap3}
 \fontsize{12bp}{14.4pt}
-\section{重建事例时缓解顶点堆积的puppi算法}
+\section{重建事例时缓解顶点堆积的PUPPI算法}
 \subsection{顶点堆积(pile-up)}
 事例堆积(pile-up)是指：大型强子对撞机（以及所有粒子物理加速器）上的质子流是一束一束的，而不是连续的。每次当一个质子流中的一束遭遇另一个质子流中的一束时，会有多个质子彼此相互作用。通常，只有其中的硬散射才能产生我们感兴趣的粒子，但在两束质子遭遇时一般只有小于等于一个相互作用顶点是“硬散射”。尽管如此，硬散射以外的相互作用仍然会大量发生，并且每个相互作用都会产生一些新粒子。这就是我们所说的堆积(pile-up)。（另一种说法是“多重相互作用”）
 
@@ -14,8 +14,8 @@
 \end{figure}
 我们在按照出射轨迹重建“烟花”顶点时，还会受到周围其他“烟花”顶点出射轨迹的影响，从而对我们重建感兴趣的“烟花”顶点造成很大困难。
 
-\subsection{puppi算法}
-现在CMS实验中使用puppi算法来解决堆积困难，其全称是Pile-Up Per Particle Identification\cite{Pileup_Per_Particle_Identification}，以下是对该算法的介绍。
+\subsection{PUPPI算法}
+现在CMS实验中使用PUPPI算法来解决堆积困难，其全称是Pile-Up Per Particle Identification\cite{Pileup_Per_Particle_Identification}，以下是对该算法的介绍。
 
 对于一个事例中的每个粒子i，我们可以定义一个变量$\alpha_i$满足
 \begin{equation}\label{define_alpha_i}
@@ -79,12 +79,12 @@
 puppi算法在CMS实验上的效果如下\textbf{图\ref{fig:2.4}}所示，可以看到在堆积顶点数目上升时，重建顶点是领头顶点的纯度依然非常稳定接近于1
 \begin{figure}[H]
  \centering
- \caption{puppi算法效果\cite{pileup-performance}}
+ \caption{PUPPI算法效果\cite{pileup-performance}}
  \includegraphics[height=9cm, width=10cm]{pictures/puppi_performance.png}
  \label{fig:3.4}
 \end{figure}
 
-至此，我们可以总结puppi算法流程如下:
+至此，我们可以总结PUPPI算法流程如下:
 \begin{enumerate}
     \item 计算事例中所有带电粒子的$\alpha^F_i$和$\alpha^C_i$以及对应的中位数和标准差。
     \item 所有来自堆积顶点的带电粒子权重都设为0，所有来自领头顶点的带电粒子权重都设为1。
@@ -94,8 +94,8 @@ puppi算法在CMS实验上的效果如下\textbf{图\ref{fig:2.4}}所示，可�
     \item 剩余被重加权粒子的集合则被当作是堆积修正了的事例。
 \end{enumerate}
 
-\section{重建喷注的Anti-$k_T$算法}
-Jet 聚类算法是用于分析强子碰撞数据的主要工具之一，下面我们将介绍目前主流的Anti-$k_T$算法\cite{The_anti-kt_jet_clustering_algorithm}是如何重建喷注的。
+\section{重建喷注的anti-kT算法}
+Jet 聚类算法是用于分析强子碰撞数据的主要工具之一，下面我们将介绍目前主流的anti-kT算法\cite{The_anti-kt_jet_clustering_algorithm}是如何重建喷注的。
 
 首先我们有一个待处理列表，里面包含所有待处理的物理对象（包括粒子和已经定义的喷注）。接着对于聚类算法，我们要定义两个物理对象i，j之间的距离\(d_{ij}\)，还要额外定义每个物理对象i和入射束流B之间的距离$d_{iB}$。这两类距离的定义如下：
 \begin{equation}\label{eq:dij}
@@ -109,13 +109,13 @@ Jet 聚类算法是用于分析强子碰撞数据的主要工具之一，下面�
 \begin{figure}[H]
  \centering
  \includegraphics[height=10cm, width=13cm]{pictures/anti-kt-3D.png}
- \caption{用anti-$k_t$算法和$k_T$，Cambridge/Aachen，SISCone算法比较得到的逆反应分布。这是用Pythia6.4模拟的双喷注事件计算的，其中最硬的两个喷注满足$p_T>200[GeV]$并且都位于$\abs{y}<2$区域。逆反应对应于两个最硬喷流中每一个的净横向动量变化，这是由于当高亮度LHC堆积粒子被加入事例时非堆积粒子的重新加权（每束交叉时约有25个pp相互作用）。\cite{The_anti-kt_jet_clustering_algorithm}}
+ \caption{用anti-kT算法和kT，Cambridge/Aachen，SISCone算法比较得到的逆反应分布。这是用Pythia6.4模拟的双喷注事件计算的，其中最硬的两个喷注满足$p_T>200[GeV]$并且都位于$\abs{y}<2$区域。逆反应对应于两个最硬喷流中每一个的净横向动量变化，这是由于当高亮度LHC堆积粒子被加入事例时非堆积粒子的重新加权（每束交叉时约有25个pp相互作用）。\cite{The_anti-kt_jet_clustering_algorithm}}
  \label{fig:3.5}
 \end{figure}
 
-对于方程\eqref{eq:dij}和方程\eqref{eq:diB}中的幂指数2p，如果我们取p=1，这就是常规的$k_T$算法，并且对于任意p>0的取值都有类似的表现，只有p=0的时候才会变成对应的“Cambridge/Aachen”算法。但是p还有一种取值，就是取p<0，这里对于所有p<0的取值，软辐射的行为都是类似的，我们专门取p=-1，并且称之为anti-$k_t$算法，也叫AK算法。R通常会取0.4、0.8、1.5三个值，分别对应的重建出的喷注名称是AK4喷注、AK8喷注、AK15喷注。
+对于方程\eqref{eq:dij}和方程\eqref{eq:diB}中的幂指数2p，如果我们取p=1，这就是常规的kT算法，并且对于任意p>0的取值都有类似的表现，只有p=0的时候才会变成对应的“Cambridge/Aachen”算法。但是p还有一种取值，就是取p<0，这里对于所有p<0的取值，软辐射的行为都是类似的，我们专门取p=-1，并且称之为anti-$k_t$算法，也叫AK算法。R通常会取0.4、0.8、1.5三个值，分别对应的重建出的喷注名称是AK4喷注、AK8喷注、AK15喷注。
 
-我们关心的Anti-$k_T$聚类重建算法是这么执行的：
+我们关心的anti-kT聚类重建算法是这么执行的：
 \begin{enumerate}
     \item 在所有的距离中找到最小的距离，如果:
     \begin{enumerate}[(1)]
@@ -126,19 +126,17 @@ Jet 聚类算法是用于分析强子碰撞数据的主要工具之一，下面�
 \end{enumerate}
 通过以上流程，我们就重建了粒子流中的所有AK喷注。
 
-
-
-Anti-$k_T$算法与其他算法重建喷注效果比较如下\textbf{图\ref{fig:2.6}}所示
+anti-kT算法与其他算法重建喷注效果在蒙特卡洛模拟样本上的比较如下\textbf{图\ref{fig:2.6}}所示
 \begin{figure}[H]
  \centering
  \includegraphics[height=8cm, width=10.5cm]{pictures/anti-kt.png}
- \caption{用anti-$k_t$算法和$k_t$，Cambridge/Aachen，SISCone算法比较得到的逆反应分布。这是用 Pythia 6.4 模拟的双喷注 事件计算的，其中最硬的两个喷注满足$p_T>$并且都位于$\abs{y}<2$。逆反应
+ \caption{用anti-kT算法和kT，Cambridge/Aachen，SISCone算法比较得到的逆反应分布。这是用 Pythia 6.4 模拟的双喷注 事件计算的，其中最硬的两个喷注满足$p_T>$并且都位于$\abs{y}<2$。逆反应
 对应于两个最硬喷流中每一个的净横向动量变化，这是由于当高亮度LHC堆积被加入事例时非堆积粒子的重新分配（每束交叉时约有25个pp相互作用）。\cite{The_anti-kt_jet_clustering_algorithm}}
  \label{fig:3.6}
 \end{figure}
-可以看到用AK算法重建出来的喷注具有更好的分辨率。
+可以看到用anti-kT算法重建出来的喷注具有更好的分辨率。
 
-\section{喷注标记算法历史发展}
+\section{喷注标记算法历史发展\cite{jet-tagging-algorithms}}
 按照历史发展，对于喷注标记技术，先后出现了基于理论的高级变量算法，基于机器学习的高级变量算法和基于深度学习的初级变量算法\cite{jet-tagging-algorithms}。下面我们将分别介绍其中的代表性算法。
 \subsection{基于理论的高级变量算法}
 基于筛选条件的标记算法从理论灵感提供的变量出发，在实验和理论两方面都经受了广泛的研究，具有鲁棒性和易于理解和实现的特点，同时也是与新算法比较的基准线。
